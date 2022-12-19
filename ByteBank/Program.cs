@@ -14,9 +14,21 @@
         }
         static void RegistrarNovoUsuario(List<string> cpfs, List<string> titulares, List<string> senhas, List<double> saldos) {
             Console.Write("Digite seu CPF: ");
-            cpfs.Add(Console.ReadLine());
+            string novoCpf=(Console.ReadLine());
+            if (cpfs.Contains(novoCpf)){
+                Console.WriteLine("CPF corresponde à um usuário existente");
+                return;
+            } else {
+                cpfs.Add(novoCpf);
+            }
             Console.Write("Digite seu nome: ");
-            titulares.Add(Console.ReadLine());
+            string novoTitular = (Console.ReadLine());
+            if (titulares.Contains(novoTitular)){
+                Console.WriteLine("Nome corresponde à um usuário existente");
+                return;
+            } else {
+                titulares.Add(novoTitular);
+            }
             Console.Write("Digite sua senha: ");
             senhas.Add(Console.ReadLine());
             saldos.Add(0);
@@ -40,7 +52,7 @@
                             Console.WriteLine("Conta removida com sucesso");
                             return;
                         } else {
-                            Console.WriteLine("Senha errada ou não conrresponde ao CPF digitado");
+                            Console.WriteLine("Senha errada ou não corresponde ao CPF digitado");
                         }
                     }
                     Console.WriteLine("Recomeçe o processo");
@@ -74,19 +86,97 @@
                 }
             }
         }
-        static void ExibirSaldoUsuario(List<string> cpfs, List<double> saldos, List<string> titulares) {
+        static void SaldoTotalDoBanco(List<double> saldos) {
+            double total = 0;
+            foreach (double saldo in saldos) {
+                total += saldo;
+            }
+            Console.WriteLine($"O saldo total do banco é de R${total}");
+        }
+        static void ShowMenu2() {
+            Console.WriteLine("1 - Realizar transferência");
+            Console.WriteLine("2 - Fazer depósito");
+            Console.WriteLine("3 - Sacar quantia");
+            Console.WriteLine("0 - Voltar");
+            Console.Write("Digite a opção desejada: ");
+        }
+        static void ManipularConta(List<double> saldos, List<string> titulares, List<string> senhas, List<string> cpfs) {
+            int option2;
+            do {
+                Console.WriteLine("--------------------------");
+                ShowMenu2();
+                option2 = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("--------------------------");
+                switch (option2) {
+                    case 0:
+                        Console.WriteLine("Alterações salvas");
+                        break;
+                    case 1:
+                        RealizarTransferencia(cpfs, saldos, titulares, senhas);
+                        break;
+                    case 2:
+                        FazerDeposito(cpfs, saldos, titulares, senhas);
+                        break;
+                }
+            } while (option2 != 0);
+        }
+
+        static void FazerDeposito(List<string> cpfs, List<double> saldos, List<string> titulares, List<string> senhas) {
             while (true) {
-                Console.Write("Digite seu CPF: ");
+                Console.Write("Confirme seu CPF: ");
                 string checkCPF = Console.ReadLine();
-                int index = cpfs.IndexOf(checkCPF);
+                int index1 = cpfs.IndexOf(checkCPF);
                 if (cpfs.Contains(checkCPF)) {
-                    Console.WriteLine("--------------------------");
-                    Console.WriteLine("--------------------------");
-                    Console.WriteLine($"O saldo de {titulares[index]} é de R${saldos[index]:F2}");
-                    Console.WriteLine("--------------------------");
+                    Console.Write("Digite o valor do depósito: ");
+                    double deposito = double.Parse(Console.ReadLine());
+                    double saldo = saldos[index1];
+                    saldo = saldo + deposito;
+                    Console.WriteLine($"Deposito de R${saldo:F2} realizado com sucesso");
                     return;
                 } else {
-                    Console.WriteLine("CPF não existe no nosso banco de dados");
+                    Console.WriteLine("Algum dos CPF's não existe no nosso banco de dados");
+                }
+
+            }
+        }
+
+        static void RealizarTransferencia(List<string> cpfs, List<double> saldos, List<string> titulares, List<string> senhas) {
+            while (true) {
+                Console.Write("Confirme seu CPF: ");
+                string checkCPF1 = Console.ReadLine();
+                int index1 = cpfs.IndexOf(checkCPF1);
+                Console.Write("Digite o CPF da conta à receber: ");
+                string checkCPF2 = Console.ReadLine();
+                int index2 = cpfs.IndexOf(checkCPF2);
+                if (cpfs.Contains(checkCPF1) && cpfs.Contains(checkCPF2)) {
+                    Console.Write("Digite o valor a ser tranferido: ");
+                    double tranferir = double.Parse(Console.ReadLine());
+                    for (int i = 0; i < 3; i++) {
+                        Console.Write("Digite sua senha: ");
+                        string checkSenha = Console.ReadLine();
+                        if (senhas.Contains(checkSenha) && cpfs.IndexOf(checkCPF1) == senhas.IndexOf(checkSenha)) {
+                            if (saldos[index1] < tranferir) {
+                                Console.WriteLine("--------------------------");
+                                Console.WriteLine("Saldo insuficiente");
+                                return;
+                            } else {
+                                double Saldo1 = saldos.IndexOf(index1);
+                                double Saldo2 = saldos.IndexOf(index2);
+                                Saldo1 = Saldo1 - tranferir;
+                                Saldo2 = Saldo2 + tranferir;
+                                Console.WriteLine("Transferência realizada com sucesso");
+                                Console.WriteLine($" - R${tranferir:F2} {titulares[index1]}");
+                                Console.WriteLine($" + R${tranferir:F2} {titulares[index2]}");
+                                return;
+                            }
+                        } else {
+                            Console.WriteLine("Senha errada ou não corresponde ao CPF digitado");
+                        }
+                    }
+                    Console.WriteLine("Recomeçe o processo");
+                } else {
+                    Console.WriteLine("Algum dos CPF's não existe no nosso banco de dados");
                 }
             }
         }
@@ -125,7 +215,10 @@
                         DetalhesDoUsuario(cpfs, saldos, titulares);
                         break;
                     case 5:
-                        ExibirSaldoUsuario(cpfs, saldos, titulares);
+                        SaldoTotalDoBanco(saldos);
+                        break;
+                    case 6:
+                        ManipularConta(saldos, titulares, senhas, cpfs);
                         break;
                 }
 
