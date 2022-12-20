@@ -131,7 +131,7 @@
                     Console.Write("Digite o valor do depósito: ");
                     double deposito = double.Parse(Console.ReadLine());
                     double saldo = saldos[index1];
-                    saldo = saldo + deposito;
+                    saldo += deposito;
                     Console.WriteLine($"Deposito de R${saldo:F2} realizado com sucesso");
                     return;
                 } else {
@@ -143,7 +143,7 @@
 
         static void RealizarTransferencia(List<string> cpfs, List<double> saldos, List<string> titulares, List<string> senhas) {
             while (true) {
-                Console.Write("Confirme seu CPF: ");
+                Console.Write("Digite seu CPF: ");
                 string checkCPF1 = Console.ReadLine();
                 int index1 = cpfs.IndexOf(checkCPF1);
                 Console.Write("Digite o CPF da conta à receber: ");
@@ -182,9 +182,7 @@
         }
 
         public static void Main(string[] args) {
-
-            Console.WriteLine("Antes de começar a usar, vamos configurar alguns valores: ");
-
+                        
             List<string> cpfs = new List<string>();
             List<string> titulares = new List<string>();
             List<string> senhas = new List<string>();
@@ -200,7 +198,7 @@
 
                 switch (option) {
                     case 0:
-                        Console.WriteLine("Estou encerrando o programa...");
+                        Console.WriteLine("Encerrando o programa...");
                         break;
                     case 1:
                         RegistrarNovoUsuario(cpfs, titulares, senhas, saldos);
