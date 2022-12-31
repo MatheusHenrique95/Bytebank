@@ -28,6 +28,8 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
             Console.WriteLine("                                          5 - Ver detalhes de uma conta              ");
             Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
+            Console.WriteLine("                                          6 - Total armazenado no banco              ");
+            Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
 
             opcao = int.Parse(Console.ReadLine());
 
@@ -50,6 +52,9 @@ namespace ByteBank.Classes {
                 case 5:
                     DetalhesDeUmaConta();
                     break;
+                case 6:
+                    TotalNoBanco();
+                        break;
                 default:
                     Console.Clear();
                     Console.WriteLine();
@@ -168,6 +173,20 @@ namespace ByteBank.Classes {
                 Thread.Sleep(1200);
                 TelaPrincipal();
             }
+        }
+        private static void TotalNoBanco() {
+            Console.Clear();
+            double total = 0;
+            foreach(Pessoa pessoa in pessoas) {
+                total += pessoa.Conta.SaldoDisponível();
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"                                        =======================================");
+            Console.WriteLine($"                                          O banco tem um total de R${total:F2} ");
+            Console.WriteLine($"                                        =======================================");
+            TelaVoltarDeslogado();
         }
         private static void ContasCadastradas() {
             Console.Clear();
