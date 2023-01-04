@@ -323,25 +323,47 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          Digite o valor do Saque:                   ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
             double valor = double.Parse(Console.ReadLine());
+            Console.WriteLine("                                          Digite sua senha:                          ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
+            string senha = Console.ReadLine();
 
-            bool OkSaque = pessoa.Conta.Saca(valor);
-            Console.Clear();
-            TelaBoasVindas(pessoa);
+            if(pessoa.Senha == senha) {
+                bool OkSaque = pessoa.Conta.Saca(valor);
+                Console.Clear();
+                TelaBoasVindas(pessoa);
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            if (OkSaque) {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                if (OkSaque) {
 
-                Console.WriteLine("                                          Saque realizado com sucesso                   ");
-                Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+                    Console.WriteLine("                                          Saque realizado com sucesso                   ");
+                    Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+                } else {
+                    Console.Clear();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("                                          Saldo insuficiente!                           ");
+                    Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+                    Thread.Sleep(1200);
+                    TelaSaque(pessoa);
+                }
+                TelaVoltarLogado(pessoa);
             } else {
-
-                Console.WriteLine("                                          Saldo insuficiente!                           ");
-                Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("                                           Senha incorreta, recomece o processo!                   ");
+                Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::::::::::              ");
+                Thread.Sleep(1200);
+                TelaSaque(pessoa);
             }
-            TelaVoltarLogado(pessoa);
+            
         }
         private static void TelaTransferencia(Pessoa pessoa) {
             Console.Clear();
@@ -350,28 +372,44 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
             string cpf = Console.ReadLine(); Pessoa pessoa2 = pessoas.FirstOrDefault(x => x.CPF == cpf);
 
-            if (pessoa2 != null || pessoa == pessoa2) {
+            if (pessoa2 != null && pessoa != pessoa2) {
 
                 Console.WriteLine("                                          Digite o valor a ser transferido:          ");
                 Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
                 double valor = double.Parse(Console.ReadLine());
-                bool OkTransfere = pessoa.Conta.Transfere(valor);
-                if (OkTransfere) {
-                    Console.Clear();
-                    pessoa2.Conta.Recebe(valor);
-                    Console.WriteLine("                                           Transferencia realizada com sucesso!                 ");
-                    Console.WriteLine("                                          ::::::::::::::::::::::::::::::::::::::::              ");
-                    TelaVoltarLogado(pessoa);
+                Console.WriteLine("                                          Digite sua senha:                          ");
+                Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
+                string senha = Console.ReadLine();
+                if (pessoa.Senha == senha) {
+
+                    bool OkTransfere = pessoa.Conta.Transfere(valor);
+                    if (OkTransfere) {
+                        Console.Clear();
+                        pessoa2.Conta.Recebe(valor);
+                        Console.WriteLine("                                           Transferencia realizada com sucesso!                 ");
+                        Console.WriteLine("                                          ::::::::::::::::::::::::::::::::::::::::              ");
+                        TelaVoltarLogado(pessoa);
+                    }else {
+                        Console.Clear();
+                        Console.WriteLine("                                           Saldo insuficiente!                 ");
+                        Console.WriteLine("                                          :::::::::::::::::::::::              ");
+                        Thread.Sleep(1200);
+                        Console.WriteLine("                                           Tente novamente!                    ");
+                        Console.WriteLine("                                          :::::::::::::::::::::::              ");
+                        Thread.Sleep(1200);
+                        TelaTransferencia(pessoa);
+                    }
 
                 } else {
                     Console.Clear();
-                    Console.WriteLine("                                           Saldo insuficiente!                 ");
-                    Console.WriteLine("                                          :::::::::::::::::::::::              ");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("                                           Senha incorreta, recomece o processo!                   ");
+                    Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::::::::::              ");
                     Thread.Sleep(1200);
-                    Console.WriteLine("                                           Tente novamente!                    ");
-                    Console.WriteLine("                                          :::::::::::::::::::::::              ");
-                    Thread.Sleep(1200);
-                    TelaVoltarLogado(pessoa);
+                    TelaTransferencia(pessoa);
                 }
 
             } else {
