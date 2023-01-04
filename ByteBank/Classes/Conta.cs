@@ -35,6 +35,22 @@ namespace ByteBank.Classes {
             return true;
 
         }
+        public bool Transfere(double valor) {
+            if (valor > this.SaldoDisponível()) {
+                return false;
+            }
+            DateTime DataAtual = DateTime.Now;
+            this.Movimentacoes.Add(new Extrato(DataAtual, "Transferencia", -valor));
+            this.Saldo -= valor;
+            return true;
+        }
+        public void Recebe(double valor) {
+            if (valor > this.SaldoDisponível()) {
+            }
+            DateTime DataAtual = DateTime.Now;
+            this.Movimentacoes.Add(new Extrato(DataAtual, "Transferencia", +valor));
+            this.Saldo += valor;
+        }
         public double SaldoDisponível() {
             return this.Saldo;
         }

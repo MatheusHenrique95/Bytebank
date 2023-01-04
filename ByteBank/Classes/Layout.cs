@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -256,11 +257,13 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
             Console.WriteLine("                                          2 - Realizar um saque                      ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          3 - Consultar saldo                        ");
+            Console.WriteLine("                                          3 - Realizar transferência                 ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          4 - Extrato                                ");
+            Console.WriteLine("                                          4 - Consultar saldo                        ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          5 - Sair                                   ");
+            Console.WriteLine("                                          5 - Extrato                                ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
+            Console.WriteLine("                                          6 - Sair                                   ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
 
             opcao = int.Parse(Console.ReadLine());
@@ -273,12 +276,15 @@ namespace ByteBank.Classes {
                     TelaSaque(pessoa);
                     break;
                 case 3:
-                    TelaSaldo(pessoa);
+                    TelaTransferencia(pessoa);
                     break;
                 case 4:
-                    TelaExtrato(pessoa);
+                    TelaSaldo(pessoa);
                     break;
                 case 5:
+                    TelaExtrato(pessoa);
+                    break;
+                case 6:
                     TelaPrincipal();
                     break;
                 default:
@@ -314,7 +320,7 @@ namespace ByteBank.Classes {
         private static void TelaSaque(Pessoa pessoa) {
             Console.Clear();
             TelaBoasVindas(pessoa);
-            Console.WriteLine("                                          Digite o valor do Saque:                ");
+            Console.WriteLine("                                          Digite o valor do Saque:                   ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
             double valor = double.Parse(Console.ReadLine());
 
@@ -336,6 +342,51 @@ namespace ByteBank.Classes {
                 Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
             }
             TelaVoltarLogado(pessoa);
+        }
+        private static void TelaTransferencia(Pessoa pessoa) {
+            Console.Clear();
+            TelaBoasVindas(pessoa);
+            Console.WriteLine("                                          Digite o CPF do beneficiado:               ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
+            string cpf = Console.ReadLine(); Pessoa pessoa2 = pessoas.FirstOrDefault(x => x.CPF == cpf);
+
+            if (pessoa2 != null || pessoa == pessoa2) {
+
+                Console.WriteLine("                                          Digite o valor a ser transferido:          ");
+                Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
+                double valor = double.Parse(Console.ReadLine());
+                bool OkTransfere = pessoa.Conta.Transfere(valor);
+                if (OkTransfere) {
+                    Console.Clear();
+                    pessoa2.Conta.Recebe(valor);
+                    Console.WriteLine("                                           Transferencia realizada com sucesso!                 ");
+                    Console.WriteLine("                                          ::::::::::::::::::::::::::::::::::::::::              ");
+                    TelaVoltarLogado(pessoa);
+
+                } else {
+                    Console.Clear();
+                    Console.WriteLine("                                           Saldo insuficiente!                 ");
+                    Console.WriteLine("                                          :::::::::::::::::::::::              ");
+                    Thread.Sleep(1200);
+                    Console.WriteLine("                                           Tente novamente!                    ");
+                    Console.WriteLine("                                          :::::::::::::::::::::::              ");
+                    Thread.Sleep(1200);
+                    TelaVoltarLogado(pessoa);
+                }
+
+            } else {
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("                                           Pessoa inexistente ou é você mesmo, tente outra!                 ");
+                Console.WriteLine("                                          ::::::::::::::::::::::::::::::::::::::::::::::::::::              ");
+                Thread.Sleep(1200);
+                TelaTransferencia(pessoa);
+            }
+
+
         }
         private static void TelaSaldo(Pessoa pessoa) {
             Console.Clear();
