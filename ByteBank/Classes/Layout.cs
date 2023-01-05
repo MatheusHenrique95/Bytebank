@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ByteBank.Classes {
     public class Layout {
@@ -82,37 +84,85 @@ namespace ByteBank.Classes {
         private static void TelaCriarConta() {
             Console.Clear();
             Console.WriteLine("                                                                                     ");
-            Console.WriteLine("                                          Digite seu nome:                           ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::::::          ");
+            Console.WriteLine("                                          Digite seu nome e sobrenome:               ");
             string nome = Console.ReadLine();
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          Digite seu CPF:                            ");
-            string cpf = Console.ReadLine();
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          Crie uma senha:                            ");
-            string senha = Console.ReadLine();
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
+            if (nome.Length > 3 && Regex.IsMatch(nome, "^[a-z A-Z]+$")) {
+                Console.WriteLine("                                          :::::::::::::::::::::::::::::::::              ");
+                Console.WriteLine("                                          Digite seu CPF (apenas números):               ");
+                string cpf = Console.ReadLine();
+                Pessoa pessoa1 = pessoas.FirstOrDefault(x => x.CPF == cpf);
+                if (cpf.Length == 11 && Regex.IsMatch(cpf, "^[0-9]+$") && pessoa1 == null) {
+                    Console.WriteLine("                                          :::::::::::::::::::::::::::::::::              ");
+                    Console.WriteLine("                                          Crie uma senha(4 dígitos):                     ");
+                    string senha = Console.ReadLine();
+                    if (senha.Length == 4) {
 
-            ContaCorrente contaCorrente = new ContaCorrente();
-            Pessoa pessoa = new Pessoa();
+                        ContaCorrente contaCorrente = new ContaCorrente();
+                        Pessoa pessoa = new Pessoa();
 
-            pessoa.SetNome(nome);
-            pessoa.SetCpf(cpf);
-            pessoa.SetSenha(senha);
-            pessoa.Conta = contaCorrente;
+                        pessoa.SetNome(nome);
+                        pessoa.SetCpf(cpf);
+                        pessoa.SetSenha(senha);
+                        pessoa.Conta = contaCorrente;
 
-            pessoas.Add(pessoa);
-            Console.Clear();
+                        pessoas.Add(pessoa);
+                        Console.Clear();
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("                                          Conta cadrastrada com sucesso                 ");
-            Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine("                                          Conta cadrastrada com sucesso                 ");
+                        Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
 
-            Thread.Sleep(1200);
+                        Thread.Sleep(1200);
 
-            TelaContaLogada(pessoa);
+                        TelaContaLogada(pessoa);
+                    } else {
+                        Console.Clear();
+
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        Console.WriteLine("                                           Formato de senha inválido!                   ");
+                        Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+
+                        Thread.Sleep(1200);
+
+                        TelaPrincipal();
+
+                    }
+                }else {
+                    Console.Clear();
+
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("                                           CPF inválido ou já existente!                ");
+                    Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+
+                    Thread.Sleep(1200);
+
+                    TelaPrincipal();
+
+                }
+            } else {
+                Console.Clear();
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("                                           Formato de nome inválido!                    ");
+                Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
+
+                Thread.Sleep(1200);
+
+                TelaPrincipal();
+            }
         }
         private static void TelaLogin() {
             Console.WriteLine("                                                                                     ");
