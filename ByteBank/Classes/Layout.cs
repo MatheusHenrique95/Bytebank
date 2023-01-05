@@ -19,8 +19,6 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                                                                     ");
             Console.WriteLine("                                          Digite uma opção:                          ");
             Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
-            Console.WriteLine("                                          0 - Encerrar o programa                    ");
-            Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
             Console.WriteLine("                                          1 - Criar conta                            ");
             Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
             Console.WriteLine("                                          2 - Entre com CPF e senha                  ");
@@ -32,6 +30,8 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          5 - Ver detalhes de uma conta              ");
             Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
             Console.WriteLine("                                          6 - Total armazenado no banco              ");
+            Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
+            Console.WriteLine("                                          0 - Encerrar o programa                    ");
             Console.WriteLine("                                          ::::::::::::::::::::::::::::::::           ");
 
             opcao = int.Parse(Console.ReadLine());
@@ -118,7 +118,7 @@ namespace ByteBank.Classes {
 
                         Thread.Sleep(1200);
 
-                        TelaContaLogada(pessoa);
+                        TelaPrincipal();
                     } else {
                         Console.Clear();
 
@@ -165,13 +165,14 @@ namespace ByteBank.Classes {
             }
         }
         private static void TelaLogin() {
+            Console.Clear();
             Console.WriteLine("                                                                                     ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
             Console.WriteLine("                                          Digite seu CPF:                            ");
             string cpf = Console.ReadLine();
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
             Console.WriteLine("                                          Digite sua senha:                          ");
             string senha = Console.ReadLine();
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
 
             Pessoa pessoa = pessoas.FirstOrDefault(x => x.CPF == cpf && x.Senha == senha);
 
@@ -192,6 +193,7 @@ namespace ByteBank.Classes {
             }
         }
         private static void TelaDeletarConta() {
+            Console.Clear();
             Console.WriteLine("                                                                                     ");
             Console.WriteLine("                                          Digite seu CPF:                            ");
             string cpf = Console.ReadLine();
@@ -241,6 +243,8 @@ namespace ByteBank.Classes {
         }
         private static void ContasCadastradas() {
             Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine();
             foreach (Pessoa pessoa in pessoas) {
                 string pessoaRegistrada = $"{pessoa.Nome} | CPF: {pessoa.CPF} | Banco: {pessoa.Conta.GetCodigoDoBanco()} |" +
                 $" Agencia: {pessoa.Conta.GetNumeroAgencia()} | Conta: {pessoa.Conta.GetNumeroDaConta()}";
@@ -255,11 +259,16 @@ namespace ByteBank.Classes {
         }
         private static void DetalhesDeUmaConta() {
             Console.Clear();
-            Console.WriteLine("                                           Digite o CPF da conta que deseja exibir detalhes                        ");
-            Console.WriteLine("                                          ::::::::::::::::::::::::::::::::::::::::::::::::::::                     ");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("                              Digite o CPF da conta que deseja exibir detalhes                        ");
+            Console.WriteLine("                             ::::::::::::::::::::::::::::::::::::::::::::::::::::                     ");
             string cpf = Console.ReadLine();
             Pessoa pessoa = pessoas.FirstOrDefault(x => x.CPF == cpf);
             if (pessoa != null) {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine();
@@ -511,13 +520,13 @@ namespace ByteBank.Classes {
         }
         private static void TelaVoltarLogado(Pessoa pessoa) {
 
-            Console.WriteLine("                                                                                     ");
-            Console.WriteLine("                                          Digite uma opção:                          ");
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          1 - Voltar para minha conta                ");
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            Console.WriteLine("                                          2 - Sair                                   ");
-            Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
+            Console.WriteLine("                                                                                             ");
+            Console.WriteLine("                                          Digite uma opção:                                  ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::::              ");
+            Console.WriteLine("                                          1 - Voltar para minha conta                        ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::::              ");
+            Console.WriteLine("                                          2 - Voltar para o menu principal                   ");
+            Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::::              ");
 
             opcao = int.Parse(Console.ReadLine());
 
@@ -535,7 +544,7 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
             Console.WriteLine("                                          1 - Voltar para o menu principal           ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
-            Console.WriteLine("                                          2 - Sair                                   ");
+            Console.WriteLine("                                          2 - Encerrar o programa                    ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
 
             opcao = int.Parse(Console.ReadLine());
