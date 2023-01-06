@@ -95,7 +95,7 @@ namespace ByteBank.Classes {
                 if (cpf.Length == 11 && Regex.IsMatch(cpf, "^[0-9]+$") && pessoa1 == null) {
                     Console.WriteLine("                                          :::::::::::::::::::::::::::::::::              ");
                     Console.WriteLine("                                          Crie uma senha(4 dígitos):                     ");
-                    string senha = Console.ReadLine();
+                    string senha = getPassword();
                     if (senha.Length == 4) {
 
                         ContaCorrente contaCorrente = new ContaCorrente();
@@ -172,7 +172,7 @@ namespace ByteBank.Classes {
             string cpf = Console.ReadLine();
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
             Console.WriteLine("                                          Digite sua senha:                          ");
-            string senha = Console.ReadLine();
+            string senha = getPassword();
 
             Pessoa pessoa = pessoas.FirstOrDefault(x => x.CPF == cpf && x.Senha == senha);
 
@@ -198,7 +198,7 @@ namespace ByteBank.Classes {
             Console.WriteLine("                                          Digite seu CPF:                            ");
             string cpf = Console.ReadLine();
             Console.WriteLine("                                          Digite sua senha:                          ");
-            string senha = Console.ReadLine();
+            string senha = getPassword();
 
             Pessoa pessoa = pessoas.FirstOrDefault(x => x.CPF == cpf && x.Senha == senha);
             int index = pessoas.FindIndex(x => x.CPF == cpf);
@@ -384,9 +384,9 @@ namespace ByteBank.Classes {
             double valor = double.Parse(Console.ReadLine());
             Console.WriteLine("                                          Digite sua senha:                          ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
-            string senha = Console.ReadLine();
+            string senha = getPassword();
 
-            if(pessoa.Senha == senha) {
+            if (pessoa.Senha == senha) {
                 bool OkSaque = pessoa.Conta.Saca(valor);
                 Console.Clear();
                 TelaBoasVindas(pessoa);
@@ -438,7 +438,7 @@ namespace ByteBank.Classes {
                 double valor = double.Parse(Console.ReadLine());
                 Console.WriteLine("                                          Digite sua senha:                          ");
                 Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::        ");
-                string senha = Console.ReadLine();
+                string senha = getPassword();
                 if (pessoa.Senha == senha) {
 
                     bool OkTransfere = pessoa.Conta.Transfere(valor);
@@ -565,6 +565,25 @@ namespace ByteBank.Classes {
 
                 TelaVoltarDeslogado();
             }
+        }
+        public static string getPassword() {
+            var pass = string.Empty;
+            ConsoleKey key;
+            do {
+                var keyInfo = Console.ReadKey(intercept: true);
+                key = keyInfo.Key;
+
+                if (key == ConsoleKey.Backspace && pass.Length > 0) {
+                    Console.Write("\b \b");
+                    pass = pass[0..^1];
+                } else if (!char.IsControl(keyInfo.KeyChar)) {
+                    Console.Write("*");
+                    pass += keyInfo.KeyChar;
+                }
+            } while (key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+            return pass;
         }
     }
 }
