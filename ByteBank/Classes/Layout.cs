@@ -79,7 +79,6 @@ namespace ByteBank.Classes {
             Console.WriteLine();
             Console.WriteLine("Encerrando o programa...");
             Thread.Sleep(1200);
-            return;
         }
         private static void TelaCriarConta() {
             Console.Clear();
