@@ -1,9 +1,4 @@
 ﻿using ByteBank.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ByteBank.Classes {
     public class Pessoa {
@@ -12,14 +7,11 @@ namespace ByteBank.Classes {
         public string Senha { get; private set; }
         public IConta Conta { get; set; }
 
-        public void SetNome(string nome) {
-            this.Nome = nome;
-        }
-        public void SetCpf(string cpf) {
-            this.CPF = cpf;
-        }
-        public void SetSenha(string senha) {
-            this.Senha = senha;
+        public Pessoa(string nome, string cpf, string senha, IConta conta) {
+            Nome = nome;
+            CPF = cpf;
+            Senha = senha;
+            Conta = conta;
         }
     }
 }

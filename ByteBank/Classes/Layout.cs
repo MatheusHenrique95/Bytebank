@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Text.RegularExpressions;
-using System.Security.Cryptography.X509Certificates;
 
 namespace ByteBank.Classes {
     public class Layout {
@@ -96,27 +90,17 @@ namespace ByteBank.Classes {
                     Console.WriteLine("                                          Crie uma senha(4 dígitos):                     ");
                     string senha = getPassword();
                     if (senha.Length == 4) {
-
                         ContaCorrente contaCorrente = new ContaCorrente();
-                        Pessoa pessoa = new Pessoa();
-
-                        pessoa.SetNome(nome);
-                        pessoa.SetCpf(cpf);
-                        pessoa.SetSenha(senha);
-                        pessoa.Conta = contaCorrente;
-
+                        Pessoa pessoa = new Pessoa(nome, cpf, senha, contaCorrente);
                         pessoas.Add(pessoa);
                         Console.Clear();
-
                         Console.WriteLine();
                         Console.WriteLine();
                         Console.WriteLine();
                         Console.WriteLine();
                         Console.WriteLine("                                          Conta cadrastrada com sucesso                 ");
                         Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
-
                         Thread.Sleep(1200);
-
                         TelaPrincipal();
                     } else {
                         Console.Clear();
@@ -407,7 +391,7 @@ namespace ByteBank.Classes {
                     Console.WriteLine("                                          Saldo insuficiente!                           ");
                     Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
                     Thread.Sleep(1200);
-                    TelaSaque(pessoa);
+                    TelaContaLogada(pessoa);
                 }
                 TelaVoltarLogado(pessoa);
             } else {
@@ -419,7 +403,7 @@ namespace ByteBank.Classes {
                 Console.WriteLine("                                           Senha incorreta, recomece o processo!                   ");
                 Console.WriteLine("                                          :::::::::::::::::::::::::::::::::::::::::::              ");
                 Thread.Sleep(1200);
-                TelaSaque(pessoa);
+                TelaContaLogada(pessoa);
             }
             
         }
