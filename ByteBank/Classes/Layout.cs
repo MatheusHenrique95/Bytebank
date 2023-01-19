@@ -1,11 +1,14 @@
 ﻿
 using System.Text.RegularExpressions;
+using System.Text.Json;
+using System.Collections.Generic;
 
 namespace ByteBank.Classes {
     public class Layout {
+        public static string filename = "pessoas.json";
         private static List<Pessoa> pessoas = new List<Pessoa>();
         private static int opcao = 0;
-        public static void TelaPrincipal() {
+        public static void TelaPrincipal(string filename) {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Clear();
@@ -35,7 +38,7 @@ namespace ByteBank.Classes {
                     EncerrarPrograma();
                     break;
                 case 1:
-                    TelaCriarConta();
+                    TelaCriarConta(filename);
                     break;
                 case 2:
                     TelaLogin();
@@ -61,7 +64,7 @@ namespace ByteBank.Classes {
                     Console.WriteLine("                                          Opção inválida!                            ");
                     Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
                     Thread.Sleep(1000);
-                    TelaPrincipal();
+                    TelaPrincipal(filename);
                     break;
             }
         }
@@ -74,7 +77,8 @@ namespace ByteBank.Classes {
             Console.WriteLine("Encerrando o programa...");
             Thread.Sleep(1200);
         }
-        private static void TelaCriarConta() {
+        private static void TelaCriarConta(string filename) {
+            
             Console.Clear();
             Console.WriteLine("                                                                                     ");
             Console.WriteLine("                                          :::::::::::::::::::::::::::::::::          ");
@@ -90,9 +94,11 @@ namespace ByteBank.Classes {
                     Console.WriteLine("                                          Crie uma senha(4 dígitos):                     ");
                     string senha = getPassword();
                     if (senha.Length == 4) {
-                        ContaCorrente contaCorrente = new ContaCorrente();
+                        ContaCorrente contaCorrente = new ContaCorrente(0.0);
                         Pessoa pessoa = new Pessoa(nome, cpf, senha, contaCorrente);
                         pessoas.Add(pessoa);
+                        string jsonstring = JsonSerializer.Serialize(pessoas);
+                        File.WriteAllText(filename, jsonstring);
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine();
@@ -101,7 +107,7 @@ namespace ByteBank.Classes {
                         Console.WriteLine("                                          Conta cadrastrada com sucesso                 ");
                         Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
                         Thread.Sleep(1200);
-                        TelaPrincipal();
+                        TelaPrincipal(filename);
                     } else {
                         Console.Clear();
 
@@ -114,7 +120,7 @@ namespace ByteBank.Classes {
 
                         Thread.Sleep(1200);
 
-                        TelaPrincipal();
+                        TelaPrincipal(filename);
 
                     }
                 }else {
@@ -129,7 +135,7 @@ namespace ByteBank.Classes {
 
                     Thread.Sleep(1200);
 
-                    TelaPrincipal();
+                    TelaPrincipal(filename);
 
                 }
             } else {
@@ -144,7 +150,7 @@ namespace ByteBank.Classes {
 
                 Thread.Sleep(1200);
 
-                TelaPrincipal();
+                TelaPrincipal(filename);
             }
         }
         private static void TelaLogin() {
@@ -172,7 +178,7 @@ namespace ByteBank.Classes {
                 Console.WriteLine("                                          Pessoa não cadastrada                         ");
                 Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
                 Thread.Sleep(1200);
-                TelaPrincipal();
+                TelaPrincipal(filename);
             }
         }
         private static void TelaDeletarConta() {
@@ -188,6 +194,8 @@ namespace ByteBank.Classes {
 
             if (pessoa != null) {
                 pessoas.RemoveAt(index);
+                string jsonstring = JsonSerializer.Serialize(pessoas);
+                File.WriteAllText(filename, jsonstring);
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine();
@@ -196,7 +204,7 @@ namespace ByteBank.Classes {
                 Console.WriteLine("                                          Conta deletada com sucesso                    ");
                 Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
                 Thread.Sleep(1200);
-                TelaPrincipal();
+                TelaPrincipal(filename);
 
             } else {
                 Console.Clear();
@@ -207,7 +215,7 @@ namespace ByteBank.Classes {
                 Console.WriteLine("                                          Pessoa não cadastrada                         ");
                 Console.WriteLine("                                          ::::::::::::::::::::::::::::::::              ");
                 Thread.Sleep(1200);
-                TelaPrincipal();
+                TelaPrincipal(filename);
             }
         }
         private static void TotalNoBanco() {
@@ -277,12 +285,12 @@ namespace ByteBank.Classes {
                 Console.WriteLine("                                          Conta inexistente!                         ");
                 Console.WriteLine("                                          :::::::::::::::::::::::::::::              ");
                 Thread.Sleep(1000);
-                TelaPrincipal();
+                TelaPrincipal(filename);
             }
         }
         private static void TelaBoasVindas(Pessoa pessoa) {
             string msgTelaBemVindo = $"{pessoa.Nome} | Banco: {pessoa.Conta.GetCodigoDoBanco()} |" +
-                $" Agencia: {pessoa.Conta.GetNumeroAgencia()} | Conta: {pessoa.Conta.GetNumeroDaConta()}";
+                $" Agencia: {pessoa.Conta.GetNumeroAgencia()} | Conta: {pessoa.Conta.GetNumeroDaConta()} ";
             Console.WriteLine();
             Console.WriteLine($"                     Seja bem-vinda(o) {msgTelaBemVindo} ");
             Console.WriteLine();
@@ -327,7 +335,7 @@ namespace ByteBank.Classes {
                     TelaExtrato(pessoa);
                     break;
                 case 6:
-                    TelaPrincipal();
+                    TelaPrincipal(filename);
                     break;
                 default:
                     Console.Clear();
@@ -516,7 +524,7 @@ namespace ByteBank.Classes {
             if (opcao == 1) {
                 TelaContaLogada(pessoa);
             } else {
-                TelaPrincipal();
+                TelaPrincipal(filename);
             }
 
         }
@@ -533,7 +541,7 @@ namespace ByteBank.Classes {
             opcao = int.Parse(Console.ReadLine());
 
             if (opcao == 1) {
-                TelaPrincipal();
+                TelaPrincipal(filename);
             } else if (opcao == 2) {
                 EncerrarPrograma();
             } else {
@@ -567,6 +575,16 @@ namespace ByteBank.Classes {
 
             Console.WriteLine();
             return pass;
+        }
+        public static void LerPessoas() {
+
+            string jsonString = File.ReadAllText(filename);
+            if (!string.IsNullOrEmpty(jsonString)) {
+                List<Pessoa> todasPessoas = JsonSerializer.Deserialize<List<Pessoa>>(jsonString);
+                todasPessoas.ForEach(pessoa => pessoas.Add(pessoa));
+            } else {
+                Console.WriteLine(" ");
+            }
         }
     }
 }

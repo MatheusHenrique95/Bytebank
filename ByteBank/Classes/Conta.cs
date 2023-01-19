@@ -3,10 +3,11 @@
 namespace ByteBank.Classes {
     public class Conta : Banco, IConta {
 
-        public Conta() {
+        public Conta(double saldo) {
             this.NumeroDaAgencia = "0001";
             Conta.NumeroDaContaSequencial++;
             this.Movimentacoes = new List<Extrato>();
+            this.Saldo= saldo;
         }
 
         public double Saldo { get; protected set; }

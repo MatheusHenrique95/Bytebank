@@ -5,9 +5,9 @@ namespace ByteBank.Classes {
         public string Nome { get; private set; }
         public string CPF { get; private set; }
         public string Senha { get; private set; }
-        public IConta Conta { get; set; }
+        public ContaCorrente Conta { get; set; }
 
-        public Pessoa(string nome, string cpf, string senha, IConta conta) {
+        public Pessoa(string nome, string cpf, string senha, ContaCorrente conta) {
             Nome = nome;
             CPF = cpf;
             Senha = senha;
